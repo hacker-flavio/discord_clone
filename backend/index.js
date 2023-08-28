@@ -44,19 +44,24 @@ function getMemes(subReddit) {
 
 function sendMessage(dataSent, memes) {
   var axios = require("axios");
-  const amount = 3;
+  const amount = dataSent.count;
   let count = 0;
-  const intervalTime = 3000;
+  const intervalTime = dataSent.frequency;
   let sendMeme = memes;
 
   const interval = setInterval(function () {
     if (count < amount) {
       const randomNumber = Math.floor(Math.random() * 9e17) + 1e17;
-      console.log(sendMeme.memes[count].url);
+
+      console.log("TITLE: " + sendMeme.memes[count].title);
+      console.log("URL: " + sendMeme.memes[count].url);
 
       var FormData = require("form-data");
       var data = new FormData();
-      data.append("content", sendMeme.memes[count].url);
+      data.append(
+        "content",
+        `${sendMeme.memes[count].title} \n ${sendMeme.memes[count].url}`
+      );
       data.append("flags", "0");
       data.append("nonce", `9${randomNumber}`);
       data.append("tts", "false");
@@ -91,6 +96,7 @@ app.post("/test", async (req, res) => {
   res.send("sending message");
   console.log("subReddit: " + req.body.data.subReddit);
   console.log("channelId: " + req.body.data.channelId);
+  console.log("count: " + req.body.data.count);
 
   try {
     const memes = await getMemes(req.body.data.subReddit);

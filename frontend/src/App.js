@@ -4,7 +4,9 @@ import React, { useEffect, useState } from "react";
 
 function App() {
   const [subReddit, setSubReddit] = useState("dankmemes");
-  const [channelId, setChannelId] = useState("1145493081089654966");
+  const [channelId, setChannelId] = useState("1116857766305345557");
+  const [count, setCount] = useState(19);
+  const [frequency, setFrequency] = useState(5000);
   function sendRequest() {
     axios
       .post(`/test`, {
@@ -12,6 +14,8 @@ function App() {
         data: {
           subReddit: subReddit,
           channelId: channelId,
+          count: count,
+          frequency: frequency,
         },
       })
       .then((res) => {
@@ -42,6 +46,24 @@ function App() {
             placeholder="enter channel id"
             value={channelId}
             onChange={(e) => setChannelId(e.target.value)}
+          />
+        </div>
+        <div>
+          <span>enter count #: </span>
+          <input
+            type="text"
+            placeholder="enter channel id"
+            value={count}
+            onChange={(e) => setCount(e.target.value)}
+          />
+        </div>
+        <div>
+          <span>enter frequency: </span>
+          <input
+            type="text"
+            placeholder="enter channel id"
+            value={frequency}
+            onChange={(e) => setFrequency(e.target.value)}
           />
         </div>
         <button onClick={sendRequest} class="btn">
