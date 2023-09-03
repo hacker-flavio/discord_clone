@@ -3,10 +3,18 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 function App() {
+  const [message, setMessage] = useState("hello world");
+  const [sentMessage, setSentMessage] = useState([]);
   const [subReddit, setSubReddit] = useState("dankmemes");
-  const [channelId, setChannelId] = useState("1116857766305345557");
+  const [channelId, setChannelId] = useState("832058298705772587");
   const [count, setCount] = useState(19);
   const [frequency, setFrequency] = useState(5000);
+  const [isToggled, setIsToggled] = useState(false);
+  const [deleteTimeout, setDeleteTimeout] = useState(5000);
+
+  const handleToggle = () => {
+    setIsToggled((prevIsToggled) => !prevIsToggled);
+  };
   function sendRequest() {
     axios
       .post(`/test`, {
@@ -22,6 +30,52 @@ function App() {
         console.log(res.data);
       });
   }
+
+  function handleDelete(id) {
+    axios
+      .post(`/delete`, {
+        withCredentials: true,
+        data: {
+          channelId: channelId,
+          messageId: id,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.message) {
+          console.log(res.data.messageId);
+          setSentMessage((prevstate) =>
+            prevstate.filter((message) => message.id !== res.data.messageId)
+          );
+        }
+      });
+  }
+  function sendMessage() {
+    axios
+      .post(`/send`, {
+        withCredentials: true,
+        data: {
+          message: message,
+          channelId: channelId,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.message && !isToggled) {
+          console.log(res.data.id);
+          setSentMessage((prevstate) => [res.data, ...prevstate]);
+        } else {
+          console.log("auto delete enabled");
+          setTimeout(() => {
+            handleDelete(res.data.id);
+          }, deleteTimeout);
+        }
+      });
+  }
+  const deleteMessage = (id) => {
+    console.log("deleting message: " + id);
+    handleDelete(id);
+  };
   useEffect(() => {
     if (channelId !== "") {
       console.log("you have selected: " + subReddit + " => " + channelId);
@@ -29,7 +83,7 @@ function App() {
   }, [subReddit, channelId]);
   return (
     <div className="App">
-      <div id="outerDiv">
+      <div className="outerDiv">
         <div>
           <span>enter sub reddit: </span>
           <input
@@ -69,6 +123,67 @@ function App() {
         <button onClick={sendRequest} class="btn">
           send
         </button>
+      </div>
+      <div className="divider"></div>
+      <div className="outerDiv">
+        <div>
+          <span>enter message: </span>
+          <input
+            type="text"
+            placeholder="enter message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+        </div>
+        <div>
+          <span>enter channel id: </span>
+          <input
+            type="text"
+            placeholder="enter channel id"
+            value={channelId}
+            onChange={(e) => setChannelId(e.target.value)}
+          />
+        </div>
+
+        <button onClick={sendMessage} class="btn">
+          send
+        </button>
+        <div>
+          <label>
+            Auto Delete:
+            <input
+              type="checkbox"
+              checked={isToggled}
+              onChange={handleToggle}
+            />
+          </label>
+          {isToggled ? (
+            <div>
+              <span>enter timeout: </span>
+              <input
+                type="text"
+                placeholder="enter channel id"
+                value={deleteTimeout}
+                onChange={(e) => setDeleteTimeout(e.target.value)}
+              />
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
+        <div>
+          {sentMessage.length > 0 &&
+            sentMessage.map((message) => (
+              <div className="message-sent">
+                <div>
+                  {message.message}:{message.id}
+                </div>
+                <button onClick={() => deleteMessage(message.id)}>
+                  delete
+                </button>
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );
