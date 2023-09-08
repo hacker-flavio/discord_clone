@@ -160,9 +160,9 @@ app.post("/delete", (req, res) => {
     url: url,
     headers: {
       Authorization:
-        "NzY5Nzc3NDg4MjcxNjM4NTQ5.Gu1WFU.YxX7i3cbU45Jh5oiyEbIK6_yrSoea03ppx1f78",
+        "NzY5Nzc3NDg4MjcxNjM4NTQ5.GjayUc.X9BuHisv2usa05_ilpbsbWj76DkdDP43n9MZV8",
       Cookie:
-        "__dcfduid=3f133c20462a11eeb0adc19a86fbd684; __sdcfduid=3f133c21462a11eeb0adc19a86fbd68480b730b19ea6cafe3a082cce475c7a82009d79c5598df7bcccd3f757a9c46e13; _gcl_au=1.1.355775653.1693285884; _ga=GA1.1.1409257420.1693285884; __cfruid=a97a62d26c33dda771a2a89b218e2d164ee51cc2-1693697974; _cfuvid=6FtEsEi09ALpDb_FfCQDGcCCrxcLcfb.3Gph8x3queg-1693697974959-0-604800000; locale=en-US; OptanonConsent=isIABGlobal=false&datestamp=Sat+Sep+02+2023+16%3A39%3A35+GMT-0700+(Pacific+Daylight+Time)&version=6.33.0&hosts=&landingPath=https%3A%2F%2Fdiscord.com%2F&groups=C0001%3A1%2CC0002%3A1%2CC0003%3A1; _ga_Q149DFWHT7=GS1.1.1693697975.2.0.1693697978.0.0.0; cf_clearance=ZZLWEzfQwM855UleVabZ2wB7fXwS5UGjCMZjixOtg3M-1693697983-0-1-b6b11789.8fdc4598.d0877456-0.2.1693697983; __cfruid=05225543dd626d355c53fef498ff9c8976ee149e-1693701214; _cfuvid=Pwp5C8GySA.YbkIpIwXxDVczmH7Ji7sg6nXFEcod.5M-1693701214210-0-604800000",
+        "__dcfduid=3f133c20462a11eeb0adc19a86fbd684; __sdcfduid=3f133c21462a11eeb0adc19a86fbd68480b730b19ea6cafe3a082cce475c7a82009d79c5598df7bcccd3f757a9c46e13; _gcl_au=1.1.355775653.1693285884; _ga=GA1.1.1409257420.1693285884; cf_clearance=ZZLWEzfQwM855UleVabZ2wB7fXwS5UGjCMZjixOtg3M-1693697983-0-1-b6b11789.8fdc4598.d0877456-0.2.1693697983; __cfruid=54de8b65e41531e20c762013819e72eaad1ac1b1-1693861590; _cfuvid=epTwfEXlvgQZJO1B0gEkIMeXOaZf5.X2uPCFiE3QXFE-1693861590200-0-604800000; locale=en-US; OptanonConsent=isIABGlobal=false&datestamp=Mon+Sep+04+2023+14%3A06%3A31+GMT-0700+(Pacific+Daylight+Time)&version=6.33.0&hosts=&landingPath=https%3A%2F%2Fdiscord.com%2F&groups=C0001%3A1%2CC0002%3A1%2CC0003%3A1; _ga_Q149DFWHT7=GS1.1.1693861591.5.0.1693861591.0.0.0",
     },
   };
 
