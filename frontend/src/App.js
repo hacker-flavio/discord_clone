@@ -15,9 +15,43 @@ function App() {
   const handleToggle = () => {
     setIsToggled((prevIsToggled) => !prevIsToggled);
   };
+
+  function testMessage() {
+    // axios
+    //   .post(`http://localhost:5000/testing`, {
+    //     withCredentials: true,
+    //     data: {
+    //       message: message,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res.data);
+    //   });
+    axios
+      .post(`http://localhost:5000/send`, {
+        withCredentials: true,
+        data: {
+          message: message,
+          channelId: channelId,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.message && !isToggled) {
+          console.log(res.data.id);
+          setSentMessage((prevstate) => [res.data, ...prevstate]);
+        } else {
+          console.log("auto delete enabled");
+          setTimeout(() => {
+            handleDelete(res.data.id);
+          }, deleteTimeout);
+        }
+      });
+  }
+
   function sendRequest() {
     axios
-      .post(`/test`, {
+      .post(`http://localhost:5000/sendMemes`, {
         withCredentials: true,
         data: {
           subReddit: subReddit,
@@ -33,7 +67,7 @@ function App() {
 
   function handleDelete(id) {
     axios
-      .post(`/delete`, {
+      .post(`http://localhost:5000/delete`, {
         withCredentials: true,
         data: {
           channelId: channelId,
@@ -52,7 +86,7 @@ function App() {
   }
   function sendMessage() {
     axios
-      .post(`/send`, {
+      .post(`http://localhost:5000/send`, {
         withCredentials: true,
         data: {
           message: message,
@@ -120,7 +154,12 @@ function App() {
             onChange={(e) => setFrequency(e.target.value)}
           />
         </div>
-        <button onClick={sendRequest} class="btn">
+        <button
+          onClick={() => {
+            sendRequest();
+          }}
+          class="btn"
+        >
           send
         </button>
       </div>
@@ -145,7 +184,12 @@ function App() {
           />
         </div>
 
-        <button onClick={sendMessage} class="btn">
+        <button
+          onClick={() => {
+            sendMessage();
+          }}
+          class="btn"
+        >
           send
         </button>
         <div>
@@ -154,7 +198,7 @@ function App() {
             <input
               type="checkbox"
               checked={isToggled}
-              onChange={handleToggle}
+              onChange={() => handleToggle()}
             />
           </label>
           {isToggled ? (
@@ -184,6 +228,16 @@ function App() {
               </div>
             ))}
         </div>
+      </div>
+      <div className="divider"></div>
+      <div>
+        <button
+          onClick={() => {
+            testMessage();
+          }}
+        >
+          test
+        </button>
       </div>
     </div>
   );

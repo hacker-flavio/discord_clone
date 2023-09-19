@@ -1,5 +1,7 @@
 const express = require("express");
-require("dotenv").config();
+const dotenv = require("dotenv");
+dotenv.config(); // Load environment variables from .env file
+
 const app = express();
 const path = require("path");
 const cors = require("cors");
@@ -93,7 +95,7 @@ function sendBatchMessage(dataSent, memes) {
   }, intervalTime);
 }
 
-app.post("/test", async (req, res) => {
+app.post("/sendMemes", async (req, res) => {
   res.send("sending message");
   console.log("subReddit: " + req.body.data.subReddit);
   console.log("channelId: " + req.body.data.channelId);
@@ -109,7 +111,24 @@ app.post("/test", async (req, res) => {
   }
 });
 
-app.post("/send", (req, res) => {
+app.post("/send", async (req, res) => {
+  // try {
+  //   const config = {
+  //     method: "get",
+  //     url: "http://localhost:4000/memes",
+  //   };
+
+  //   const response = await axios(config); // Wait for the axios request to complete
+
+  //   console.log("Request made");
+  //   console.log(response.data);
+
+  //   res.status(200).json(response.data);
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).json({ error: error.message });
+  // }
+
   console.log("message: " + req.body.data.message);
   console.log("channelId: " + req.body.data.channelId);
   const randomNumber = Math.floor(Math.random() * 9e17) + 1e17;
@@ -120,19 +139,16 @@ app.post("/send", (req, res) => {
   data.append("flags", "0");
   data.append("nonce", randomNumber);
   data.append("tts", "false");
-
   var config = {
     method: "post",
     url: `https://discord.com/api/v9/channels/${req.body.data.channelId}/messages`,
     headers: {
       Cookie: COOKIE,
       authorization: AUTHORIZATION,
-
       ...data.getHeaders(),
     },
     data: data,
   };
-
   axios(config)
     .then(function (response) {
       console.log("successfuly sent message");
@@ -159,10 +175,8 @@ app.post("/delete", (req, res) => {
     maxBodyLength: Infinity,
     url: url,
     headers: {
-      Authorization:
-        "NzY5Nzc3NDg4MjcxNjM4NTQ5.GjayUc.X9BuHisv2usa05_ilpbsbWj76DkdDP43n9MZV8",
-      Cookie:
-        "__dcfduid=3f133c20462a11eeb0adc19a86fbd684; __sdcfduid=3f133c21462a11eeb0adc19a86fbd68480b730b19ea6cafe3a082cce475c7a82009d79c5598df7bcccd3f757a9c46e13; _gcl_au=1.1.355775653.1693285884; _ga=GA1.1.1409257420.1693285884; cf_clearance=ZZLWEzfQwM855UleVabZ2wB7fXwS5UGjCMZjixOtg3M-1693697983-0-1-b6b11789.8fdc4598.d0877456-0.2.1693697983; __cfruid=54de8b65e41531e20c762013819e72eaad1ac1b1-1693861590; _cfuvid=epTwfEXlvgQZJO1B0gEkIMeXOaZf5.X2uPCFiE3QXFE-1693861590200-0-604800000; locale=en-US; OptanonConsent=isIABGlobal=false&datestamp=Mon+Sep+04+2023+14%3A06%3A31+GMT-0700+(Pacific+Daylight+Time)&version=6.33.0&hosts=&landingPath=https%3A%2F%2Fdiscord.com%2F&groups=C0001%3A1%2CC0002%3A1%2CC0003%3A1; _ga_Q149DFWHT7=GS1.1.1693861591.5.0.1693861591.0.0.0",
+      Authorization: AUTHORIZATION,
+      Cookie: COOKIE,
     },
   };
 
@@ -198,6 +212,10 @@ app.post("/delete", (req, res) => {
   //     console.log(error);
   //     res.status(500).json({ error: error });
   //   });
+});
+
+app.post("/testing", (req, res) => {
+  res.send(req.body.data.message);
 });
 
 app.listen(port, () => {
