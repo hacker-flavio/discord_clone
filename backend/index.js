@@ -149,18 +149,44 @@ app.post("/send", async (req, res) => {
     },
     data: data,
   };
-  axios(config)
-    .then(function (response) {
-      console.log("successfuly sent message");
-      console.log(response.data.id);
-      res
-        .status(200)
-        .json({ message: req.body.data.message, id: response.data.id });
-    })
-    .catch(function (error) {
-      console.log(error);
-      res.status(500).json({ error: error });
-    });
+  try {
+    // axios(config)
+    //   .then(function (response) {
+    //     console.log("successfuly sent message");
+    //     console.log(response.data.id);
+    //     res
+    //       .status(200)
+    //       .json({ message: req.body.data.message, id: response.data.id });
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //     res.status(500).json({ error: error });
+    //   });
+    axios(config)
+      .then(function (response) {
+        if (response.status === 200) {
+          console.log("Successfully sent message");
+          console.log(response.data.id);
+          res
+            .status(200)
+            .json({ message: req.body.data.message, id: response.data.id });
+        } else {
+          console.log(
+            "Error sending message:",
+            response.status,
+            response.statusText
+          );
+          res.status(response.status).json({ error: response.statusText });
+        }
+      })
+      .catch(function (error) {
+        console.error("Axios error:", error);
+        res.status(500).json({ error: error.message });
+      });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.post("/delete", (req, res) => {
