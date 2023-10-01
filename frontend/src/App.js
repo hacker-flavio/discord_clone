@@ -228,6 +228,30 @@ function App() {
               </div>
             ))}
         </div>
+        <br />
+        <div>
+          <label>
+            Batch send:
+            <input
+              type="checkbox"
+              checked={isToggled}
+              onChange={() => handleToggle()}
+            />
+          </label>
+          {isToggled ? (
+            <div>
+              <span>enter timeout: </span>
+              <input
+                type="text"
+                placeholder="enter channel id"
+                value={deleteTimeout}
+                onChange={(e) => setDeleteTimeout(e.target.value)}
+              />
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
       </div>
       <div className="divider"></div>
       <div>
