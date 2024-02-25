@@ -27,6 +27,8 @@ function App() {
     //   .then((res) => {
     //     console.log(res.data);
     //   });
+
+    //small change
     axios
       .post(`http://localhost:5000/send`, {
         withCredentials: true,
